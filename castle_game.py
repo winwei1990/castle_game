@@ -184,6 +184,8 @@ def create_map(team1: list, team2: list):
 def update_army_size(building: Building):
     '''
     Creates the field with the number of soldiers on top-left of each castle.
+    The entry at [0] has a special format (see return of this function) this is
+    the format required to display text on the screen.
 
     Attribute: 
     building:       Building Class object as for all castles the same.
@@ -304,7 +306,7 @@ def start_game():
     and try until infity and never ever stop. See the while loops in the public function set_coordinates()
     located in the Class Building.
     '''
-    no_of_buildings_team1 = 2
+    no_of_buildings_team1 = 3
     no_of_buildings_team2 = 2
     
     '''
@@ -469,12 +471,19 @@ def start_game():
                                     troop.x_position = -100
                                     troop.y_position = -100
 
+                else: 
+                    troop.units == 0
+                    troop.x_position = -100
+                    troop.y_position = -100
+
+                'Count the total soldiers in all building per team'
                 for building in team1 + team2:
                     if building.team == 1:
                         stationary_troops_team1 += building.units
                     else:
                         stationary_troops_team2 += building.units
                 
+                'Lose when units in all buildings == 0'
                 if stationary_troops_team1 <= 0:
                     winner_team = winner_font.render("Team 2 Wins", True, (0, 0, 0))
                     window.blit(winner_team,(width/2,height/2))
@@ -489,12 +498,15 @@ def start_game():
                     time.sleep(2)
                     exit()
 
+                'display troop size'
                 window.blit(troop_size, (troop.x_position-10, troop.y_position))
+                'display the red or blue troop sign/image'
                 if troop.team == 1:
                     window.blit(troop_image, (troop.x_position, troop.y_position))
                 else:
                     window.blit(troop2_image, (troop.x_position, troop.y_position))
-            
+
+        'display the number of units in each castle'    
         for i, building in army_size.items():
             window.blit(building[0], (building[1], building[2]))
         
